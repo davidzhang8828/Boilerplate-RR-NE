@@ -1,7 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/client/index.js',
+  entry: {
+    app: ['./src/client/index.js', 'webpack-hot-middleware/client'],
+    vendor: ['react', 'react-dom']
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
@@ -36,5 +41,9 @@ module.exports = {
     },
     hot: true,
     historyApiFallback: true
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html') }),
+    new webpack.HotModuleReplacementPlugin()
+  ]
 };

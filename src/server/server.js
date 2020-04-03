@@ -10,8 +10,22 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-// serve up static files from webpack
-app.use('/build', express.static(path.join(__dirname, '../../build')));
+
+// Handle parsing request body
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+/* Webpack/ Webpack Compiler */
+
+const webpack = require('webpack');
+const webpackConfig = require('../../webpack.config.js');
+
+const compiler = webpack(webpackConfig);
+
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true, publicPath: webpackConfig.output.publicPath, stats: { colors: true }
+}));
+app.use(require('webpack-hot-middleware')(compiler));
 
 // serve index.html on the route '/'
 app.get('/', (req, res) => {
