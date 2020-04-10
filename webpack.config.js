@@ -16,7 +16,8 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   module: {
-    rules: [{
+    rules: [
+      {
       test: /\.(js|jsx)$/,
       exclude: /node_modules/,
       use: {
@@ -30,7 +31,11 @@ module.exports = {
       test: /\.s[ac]ss$/i,
       exclude: /(node_modules)/,
       use: ['style-loader', 'css-loader', 'sass-loader']
-    }
+    },
+    { // for plain css
+      test: /\.css$/i,
+      use: ['style-loader', 'css-loader'],
+    },
     ]
   },
   devServer: {
